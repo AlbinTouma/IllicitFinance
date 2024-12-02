@@ -1,0 +1,68 @@
+{{block "profile" .}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Illicit Finance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+  <link href="../public/index.css" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Illicit Finance</h1>
+      <input placeholder="Search">
+    </div>
+    {{template "nav"}}
+  </header>
+  <article class="article__entities">
+    <div class="content content__entities">
+      <div class="content-cols content-cols--entities">
+        <div class="two_cols float-left">
+          <div class="select-box">
+            <span>Recent</span>
+            <span>PEP</span>
+            <span>Watchlist</span>
+          </div>
+        </div>
+      <div class="two_cols float_right">
+          <h1>{{ index . "Name"}}</h1>
+          <figure style="float: left; margin: 0px 7px 5px 0px;">
+              <image src="http://www.localhost:8090/api/files/Person/{{.Map.Id}}/{{.Map.Image}}" width="200" height="200">
+          </image>
+          </figure>
+            {{.Map.Description}}
+    </div>
+          {{template "infobox" .}}
+  </article>
+  <footer class="footer">
+    <div>
+      <span>Copyright @ 2024-10-24</span>
+      <span>Illicit Finance</span>
+      <span>Thank you</span>
+    </div>
+  </footer>
+</body>
+</html>
+{{end}}
+
+
+<!--We loop over the keys provided to determine is included, in right order, and to omit if nil---->
+{{define "infobox"}}
+<div style="width:100%">
+  {{range $key := .Keys}}
+  {{range $mapKey, $mapValue := $.Map}}
+    {{ if eq $key $mapKey}}
+      {{if .}}
+      <p>{{$key}}</p>
+      <strong>{{$mapValue}}</strong>
+  {{end}}
+{{end}}
+{{end}}
+  {{end}}
+</div>
+{{end}}
+

@@ -1,0 +1,158 @@
+html {
+  height: 100vh;
+}
+
+body {
+  max-width: 1020px;
+  margin: auto;
+  font-weight: 400;
+  font-family: 'Source Sans 3', serif;
+  font-style: normal;
+  font-size: 87.5%;
+}
+
+
+header .header-banner {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  padding-top: 5%;
+}
+
+.donate-banner {
+  display: flex;
+  justify-content: flex-end;
+}
+.donate-banner .donate-banner-content {
+-webkit-clip-path: polygon(30px 100%, 100% 100%, 100% 0%, 0% 0%, 0% calc(100% - 30px));
+clip-path: polygon(30px 100%, 100% 100%, 100% 0%, 0% 0%, 0% calc(100% - 30px));
+  padding-left: 50px;
+  padding-right: 10px;
+  color: white;
+  background-color: #90a7c2;
+  display: flex;
+  flex-directin: row;
+  align-items: center;
+}
+.donate-banner, .donate-banner-content ul {
+  display: flex;
+  flex-direction: flex-row;
+  list-style-type: none;
+  gap: 10px;
+}
+
+header .header-logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
+  gap: 50px;
+  margin-bottom: 0;
+  width: 80%;
+  float: left;
+}
+
+header section input {
+  width: 20%;
+  height: 20px;
+  float: right;
+}
+
+
+nav {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  background: navy;
+  color: white;
+  list-style-type: none;
+  align-items: center;
+  font-size: 16px;
+}
+
+nav .navText {
+  font-weight: 600;
+  padding: 10px;
+  justify-content: center;
+  border-right: thin solid;
+  width: 100%;
+
+}
+
+
+article {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 10px;
+}
+
+.article__entities {
+  grid-template-columns: 3fr 1fr;
+}
+
+.content {
+  grid-span: 2fr;
+  padding-top: 5%;
+}
+.content__entities{
+  grid-column: 1/2;
+}
+
+.content-cols {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.content-cols--entities {
+  gap: 5%;
+}
+
+.hero-image {
+  grid-span: 2fr;
+  width: 100%;
+}
+
+.two-cols {
+  width: 50%;
+  padding: 2px;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.content hr {
+  border: 0.5px dotted grey;
+}
+
+
+.latest {
+  grid-span: 1fr;
+}
+
+
+.select-box {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  height: 100px;
+  background: lightgrey;
+  padding: 5px;
+  }
+
+#field-label{
+  color: "#666";
+  size: 14px;
+}
+
+footer {
+  grid-column: 1/-1;
+  display: flex;
+  flex-direction: column;
+  border-top: 5px solid lightgrey;
+}
