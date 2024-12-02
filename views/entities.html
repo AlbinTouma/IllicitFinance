@@ -1,0 +1,58 @@
+{{block "entities" .}}
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Illicit Finance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+      <link href="../public/index.css" rel="stylesheet">
+    </head>
+    <body>
+      <header>
+      <div>
+        <h1>Illicit Finance</h1>
+        <input placeholder="Search"></input>
+      </div>
+      {{template "nav"}}
+      </header>
+      <article class='article__entities'>
+      <div class='content content__entities'>
+        <div class='content-cols content-cols--entities'>
+          <div class='two_cols float-left'>
+            <div class='select-box'>
+              <span>Recent</span>
+              <span>PEP</span>
+              <span>Watchlist</span>
+            </div>
+          </div>
+          <div class='two_cols float-right'>
+            <h1>Featured Entities</h1>
+            <p>This page contains profiles of entities researched and written by the Oden Project. These entities - persons, companies, institutes, government agences - are thought to be contributing to illicit finance and war. 
+              Many of these entities have been explicitly identified by governments. <br></br>
+              The entities on this page are feature. For a full list of entities use our Alphabetical list.
+              We believe this information to be reliable; however, we cannot guarantee full accuracy or completness. We invite comment on this information.
+            </p>
+            <div>
+              {{range .}}
+              <h3><a href='/entities/{{.Name}}'>{{.Name}}</a></h3>
+              {{end}}
+            </div>
+          </div>
+       </div>
+      </div>
+     <footer class='footer'>
+      <div>
+        <span>Copyright @ 2024-10-24 </span>
+        <span>Illicit Finance</span>
+        <span>Thank you</span>
+      </div>
+      </footer>
+      </article>
+    </body>
+</html>
+{{end}}
+
+
