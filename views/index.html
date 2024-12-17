@@ -45,16 +45,17 @@
 
        {{ range .}}
             {{.Name}}
-        {{ end }}
+      {{ end }}
         
         </div>
         <div class="two-cols float-right">      
         <hr>
         <h1>ENTITIES</h1>
         {{ range .}}
-            {{.Name}}
+              <p>{{firstElement .Name}}</p>
+            <p>{{firstElement .Notes}}</p>
         {{ end }}
-                </div>
+      </div>
       </section>
       </section>
       <section class='latest'>

@@ -1,71 +1,49 @@
 package db
 
 import (
-	"database/sql"
+	//	"database/sql"
 	//"fmt"
+	"encoding/json"
+	"kys/models"
 	"log"
+
+	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
-  "kys/models"
 )
 
- 
 //http://go-database-sql.org/retrieving.html
 func QueryEntity() ([]db_models.Person, error) {
-  db, err := sql.Open("sqlite3", "./db/pb_data/data.db")
+  db, err := sqlx.Open("sqlite3", "./db/pb_data/data.db")
   if err != nil {
-    log.Fatal(err)
+    log.Printf("Error in sqlx %s", err)
   }
-  rows, err := db.Query("SELECT * FROM Person;")
+  defer db.Close()
+  
+  var entities []db_models.Entity
+  err = db.Select(&entities, "SELECT id, Schema, Properties FROM test;")
   if err != nil {
-    log.Printf("Err %s", err)
+    log.Printf("Error fetching entities from db %s", err)
     return nil, err
   }
-  //fmt.Printf("%T\n", rows)
-  var results []db_models.Person
 
-  for rows.Next(){
-    queryResult := db_models.Person{}
-    rows.Scan(
-      &queryResult.Id,
-      &queryResult.Name, 
-      &queryResult.FirstName,
-      &queryResult.MiddleName,
-      &queryResult.LastName,
-      &queryResult.NameSuffix,
-      &queryResult.FatherName,
-      &queryResult.MotherName,
-      &queryResult.BirthDate, 
-      &queryResult.DeathDate, 
-      &queryResult.Gender, 
-      &queryResult.Ethnicity, 
-      &queryResult.Height, 
-      &queryResult.Weight, 
-      &queryResult.EyeColor, 
-      &queryResult.HairColor, 
-      &queryResult.Appearance, 
-      &queryResult.Religion,
-      &queryResult.SpokenLanguage, 
-      &queryResult.Education,
-      &queryResult.Address,
-      &queryResult.Nationality, 
-      &queryResult.Citizenship, 
-      &queryResult.BirthPlace, 
-      &queryResult.BirthCountry, 
-      &queryResult.Position,
-      &queryResult.Email, 
-      &queryResult.Phone, 
-      &queryResult.PassportNumber, 
-      &queryResult.SocialSecurityNumber, 
-      &queryResult.SourceName,
-      &queryResult.SourceUrl,
-      &queryResult.Note,
-      &queryResult.Image,
-      &queryResult.Created,
-      &queryResult.LastUpdated,
+  log.Printf("Ent %s", entities)
+  
+  var persons []db_models.Person
 
-      )
-    results = append(results, queryResult)
+  for _, entity := range entities {
+    var person db_models.Person
+    
+    err := json.Unmarshal([]byte(entity.Properties.(string)), &person)
+    
+    if err != nil {
+      log.Printf("Error unmarshalling json", entity.ID, err)
+      continue
+    }
+    log.Printf("Person marshal %s", person)
+    persons = append(persons, person)
   }
-  return results, nil
 
+
+  log.Printf("Persons %s", persons)
+  return persons, nil
 }
