@@ -1,4 +1,4 @@
-{{block "profile" .}}
+<!-----{{block "profile" .}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +36,6 @@
           </figure>
             {{.Map.Description}}
     </div>
-          {{template "infobox" .}}
   </article>
   <footer class="footer">
     <div>
@@ -49,20 +48,27 @@
 </html>
 {{end}}
 
+----->
 
-<!--We loop over the keys provided to determine is included, in right order, and to omit if nil---->
+<!--We loop over the keys provided to determine is included, in right order, and to omit if nil
+
 {{define "infobox"}}
 <div style="width:100%">
   {{range $key := .Keys}}
-  {{range $mapKey, $mapValue := $.Map}}
-    {{ if eq $key $mapKey}}
-      {{if .}}
-      <p>{{$key}}</p>
-      <strong>{{$mapValue}}</strong>
-  {{end}}
-{{end}}
-{{end}}
+    {{range $mapKey, $mapValue := $.Map}}
+      {{if eq $key $mapKey}}
+        <p>{{$key}}</p>
+          <ul>
+            {{range $mapValue}}
+              <li>{{.}}</li>
+            {{end}}
+          </ul>
+        {{else}}
+          <strong>{{$mapValue}}</strong>
+        {{end}}
+      {{end}}
+    {{end}}
   {{end}}
 </div>
 {{end}}
-
+---->

@@ -5,29 +5,17 @@ import (
 	"io"
 	"kys/services"
 	"log"
-	"reflect"
 //  "golang.org/x/exp/maps"
 	"github.com/labstack/echo/v4"
 )
 
-func StructToMap(data interface{}) map[string]interface{}{
-  result := make(map[string]interface{})
-  val := reflect.ValueOf(data)
-  typ := reflect.TypeOf(data)
-  for i:= 0; i < val.NumField(); i++ {
-    field := typ.Field(i)
-    tag := field.Tag.Get("human")
-    if tag == ""{
-      tag = field.Tag.Get("json")
-    }
-    if tag == "" {
-      tag = field.Name
-    }
-    result[tag] = val.Field(i).Interface()
-    log.Print(result[tag])
+func FirstElement(list []string) string {
+  if len(list) > 0 {
+    return list[0]
   }
-  return result
+  return ""
 }
+
 
 func main(){
 	e := echo.New()
@@ -38,6 +26,7 @@ func main(){
 	e.GET("/", func(c echo.Context) error {
       result, err := db.QueryEntity()
       if err != nil {
+        log.Printf("ERROR")
         return c.JSON(200, err)
     }
 
@@ -51,6 +40,7 @@ func main(){
         return c.JSON(200, err)
       }
 			return c.JSON(200, result)
+
 	})
 
 	e.GET("/entities", func(c echo.Context) error {
@@ -59,10 +49,12 @@ func main(){
         return c.JSON(200, "DB down")
     }
 			//log.Print("Entities")
-			return c.Render(200, "entities", result)
+			return c.Render(200, "", result)
 	})
 
-	e.GET("/entities/:entity", func(c echo.Context) error {
+
+/*
+  e.GET("/entities/:entity", func(c echo.Context) error {
     result, err := db.QueryEntity()
       if err != nil {
         return c.JSON(200, "DB down")
@@ -83,7 +75,7 @@ func main(){
 		}
 		return c.Render(200, "profile", nil)
 	})
-
+*/
 	e.Start(":8080")
 
 }
@@ -98,8 +90,11 @@ func (t *Templates) Render(w io.Writer, name string, data interface{}, c echo.Co
 }
 
 func newTemplate() *Templates{
+  funcMap := template.FuncMap{
+		"firstElement": FirstElement,
+	}
 	return &Templates{
-			templates: template.Must(template.ParseGlob("*views/*.html")),
+			templates: template.Must(template.New("").Funcs(funcMap).ParseGlob("*views/*.html")),
 	}
 }
 
