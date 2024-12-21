@@ -37,7 +37,7 @@
             </p>
             <div>
               {{range .}}
-              <h3><a href='/entities/{{.}}'>{{.}}</a></h3>
+              <h3><a href='/entities/{{firstElement .Name}}'>{{firstElement .Name}}</a></h3>
               {{end}}
             </div>
           </div>

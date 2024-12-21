@@ -1,4 +1,4 @@
-<!-----{{block "profile" .}}
+{{block "profile" .}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,13 +29,14 @@
           </div>
         </div>
       <div class="two_cols float_right">
-          <h1>{{ index . "Name"}}</h1>
+          <h1>{{firstElement .Name}}</h1>
           <figure style="float: left; margin: 0px 7px 5px 0px;">
-              <image src="http://www.localhost:8090/api/files/Person/{{.Map.Id}}/{{.Map.Image}}" width="200" height="200">
+              <image src="http://www.localhost:8090/api/files/Person/" width="200" height="200">
           </image>
           </figure>
-            {{.Map.Description}}
+          {{firstElement .Notes}}
     </div>
+          {{template "infobox" .}}
   </article>
   <footer class="footer">
     <div>
@@ -48,27 +49,39 @@
 </html>
 {{end}}
 
------>
 
-<!--We loop over the keys provided to determine is included, in right order, and to omit if nil
 
 {{define "infobox"}}
 <div style="width:100%">
-  {{range $key := .Keys}}
-    {{range $mapKey, $mapValue := $.Map}}
-      {{if eq $key $mapKey}}
-        <p>{{$key}}</p>
-          <ul>
-            {{range $mapValue}}
-              <li>{{.}}</li>
-            {{end}}
-          </ul>
-        {{else}}
-          <strong>{{$mapValue}}</strong>
-        {{end}}
-      {{end}}
-    {{end}}
-  {{end}}
+  <div id='infobox'></div>
+  <script>
+   const entityObj = {{. }};
+   const infobox = document.getElementById("infobox")
+   function removeBlanks(obj){
+     const result = {};
+     for (const key in obj){
+       if (obj[key] !== null && obj[key] !== "" && obj[key] !== undefined && key !== "notes"){
+         result[key] = obj[key];
+       }
+     }
+     return result;
+   }
+
+   const object = removeBlanks(entityObj);
+   console.log(object);
+
+   Object.keys(object).forEach(key =>{
+     const p = document.createElement('strong');
+     const span = document.createElement('div')
+     p.textContent = `${key}`
+     span.textContent = `${object[key]}`
+     infobox.appendChild(p);
+     infobox.appendChild(span);
+
+     } 
+   );
+
+  </script>
 </div>
 {{end}}
----->
+

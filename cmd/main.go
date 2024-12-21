@@ -5,7 +5,9 @@ import (
 	"io"
 	"kys/services"
 	"log"
-//  "golang.org/x/exp/maps"
+	"slices"
+
+	//  "golang.org/x/exp/maps"
 	"github.com/labstack/echo/v4"
 )
 
@@ -49,33 +51,25 @@ func main(){
         return c.JSON(200, "DB down")
     }
 			//log.Print("Entities")
-			return c.Render(200, "", result)
+			return c.Render(200, "entities", result)
 	})
 
 
-/*
   e.GET("/entities/:entity", func(c echo.Context) error {
+		query := c.Param("entity")
     result, err := db.QueryEntity()
       if err != nil {
         return c.JSON(200, "DB down")
     }
-		query := c.Param("entity")
-		for _, v := range result{
-			if v.Name == query {
-        entityMap := StructToMap(v)
-        //keys := maps.Keys(entity)
-        keys := []string{"Date of Birth", "Date of Death", "Gender", "Nationality", "Citizenship", "Birthplace", "Birth Country", "Passport Number", "Social Security Number", "Phone", "Source Name", "Source"}
-        data := map[string]interface{}{
-          "Map": entityMap,
-          "Keys": keys,
-        }
 
-			 return c.Render(200, "profile", data)
+		for _, v := range result{
+			if slices.Contains(v.Name, query) {
+        log.Printf("PROFILE %s", v)
+        return c.Render(200, "profile", v)
 			}
 		}
 		return c.Render(200, "profile", nil)
 	})
-*/
 	e.Start(":8080")
 
 }
