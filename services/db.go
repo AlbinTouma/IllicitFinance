@@ -20,7 +20,7 @@ func QueryEntity() ([]db_models.Person, error) {
   defer db.Close()
   
   var entities []db_models.Entity
-  err = db.Select(&entities, "SELECT id, Schema, Properties FROM test;")
+  err = db.Select(&entities, "SELECT id, Schema, Properties, Image FROM test;")
   if err != nil {
     log.Printf("Error fetching entities from db %s", err)
     return nil, err
@@ -34,9 +34,8 @@ func QueryEntity() ([]db_models.Person, error) {
     var person db_models.Person
     
     err := json.Unmarshal([]byte(entity.Properties.(string)), &person)
-    
     if err != nil {
-      log.Printf("Error unmarshalling json", entity.ID, err)
+      log.Printf("Error unmarshalling json", entity.Id, err)
       continue
     }
     log.Printf("Person marshal %s", person)
