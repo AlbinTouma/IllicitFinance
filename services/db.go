@@ -12,37 +12,28 @@ import (
 )
 
 //http://go-database-sql.org/retrieving.html
-func QueryEntity() ([]db_models.Person, error) {
+func QueryEntity() ([]db_models.Entity, error) {
   db, err := sqlx.Open("sqlite3", "./db/pb_data/data.db")
   if err != nil {
     log.Printf("Error in sqlx %s", err)
   }
   defer db.Close()
-  
   var entities []db_models.Entity
-  err = db.Select(&entities, "SELECT id, Schema, Properties, Image FROM test;")
+
+  err = db.Select(&entities, "SELECT id, caption, schema, properties, image FROM test;")
   if err != nil {
     log.Printf("Error fetching entities from db %s", err)
     return nil, err
   }
 
-  log.Printf("Ent %s", entities)
-  
-  var persons []db_models.Person
-
-  for _, entity := range entities {
+  for i := range entities {
     var person db_models.Person
-    
-    err := json.Unmarshal([]byte(entity.Properties.(string)), &person)
+    err := json.Unmarshal([]byte(entities[i].Properties.(string)), &person)
     if err != nil {
-      log.Printf("Error unmarshalling json", entity.Id, err)
+      log.Printf("Error unmarshalling json", entities[i].Id, err)
       continue
     }
-    log.Printf("Person marshal %s", person)
-    persons = append(persons, person)
+    entities[i].Properties = person
   }
-
-
-  log.Printf("Persons %s", persons)
-  return persons, nil
+  return entities, nil
 }

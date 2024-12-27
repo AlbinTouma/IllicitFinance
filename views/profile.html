@@ -29,12 +29,21 @@
           </div>
         </div>
       <div class="two_cols float_right">
-          <h1>{{firstElement .Name}}</h1>
-          <figure style="float: left; margin: 0px 7px 5px 0px;">
-              <image src="http://www.localhost:8090/api/files/Person/" width="200" height="200">
-          </image>
-          </figure>
-          {{firstElement .Notes}}
+         <h1>{{.Caption}}</h1>
+          <div>
+              {{if .Image}}
+              <figure>
+              <image id="profilePicture" src="http://www.localhost:8090/api/files/Test/{{.Id}}/{{.Image}}" width="200" height="200">
+              </image>
+              </figure>
+             {{end}}
+              {{if .Properties.Notes}}
+              <p>{{index .Properties.Notes 0}}</p>
+              {{else}}
+              <p></p>
+              {{end}}
+
+          </div>
     </div>
           {{template "infobox" .}}
   </article>
@@ -55,8 +64,10 @@
 <div style="width:100%">
   <div id='infobox'></div>
   <script>
-   const entityObj = {{. }};
+   const entityObj = {{getHumanTags .Properties}};
+   console.log(entityObj)
    const infobox = document.getElementById("infobox")
+
    function removeBlanks(obj){
      const result = {};
      for (const key in obj){
@@ -68,18 +79,29 @@
    }
 
    const object = removeBlanks(entityObj);
-   console.log(object);
+   console.log("Cleared object", object)
 
    Object.keys(object).forEach(key =>{
-     const p = document.createElement('strong');
-     const span = document.createElement('div')
-     p.textContent = `${key}`
-     span.textContent = `${object[key]}`
-     infobox.appendChild(p);
-     infobox.appendChild(span);
+     const container = document.createElement('div');
+     container.style.cssText = "display: flex; flex-direction: column; width:100%; margin-bottom: 2px;"
 
+     const keyElement = document.createElement('strong');
+     keyElement.textContent = `${key}`
+
+     const valueElement = document.createElement('span')
+     if (Array.isArray(object[key])){
+       valueElement.textContent = object[key].join(", ");
+     } else {
+      valueElement.textContent = object[key]
+     }
+
+     container.appendChild(keyElement);
+     container.appendChild(valueElement);
+     infobox.appendChild(container);
+     console.log("Printing values", valueElement)
      } 
    );
+  
 
   </script>
 </div>

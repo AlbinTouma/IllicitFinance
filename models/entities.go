@@ -2,7 +2,8 @@ package db_models
 
 type Entity struct {
   Id  string  `db:"id"`
-  Schema  string  `db:"Schema"`
-  Properties  interface{} `db:"Properties"`
-  Image string `db:"Image"`
+  Caption string `db:"caption"`
+  Schema  string  `db:"schema"`
+  Properties  interface{} `db:"properties"`
+  Image string `db:"image"`
 }

@@ -42,18 +42,14 @@
         <div class='two-cols float-left'>
         <hr>
         <h1>WATCHLIST</h1>
-
-       {{ range .}}
-            {{.Name}}
-      {{ end }}
         
         </div>
         <div class="two-cols float-right">      
         <hr>
         <h1>ENTITIES</h1>
         {{ range .}}
-              <p>{{firstElement .Name}}</p>
-            <p>{{firstElement .Notes}}</p>
+              <p>{{firstElement .Properties.Name}}</p>
+            <p>{{firstElement .Properties.Notes}}</p>
         {{ end }}
       </div>
       </section>

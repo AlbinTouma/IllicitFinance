@@ -5,9 +5,7 @@ import (
 	"io"
 	"kys/services"
 	"log"
-	"slices"
-
-	//  "golang.org/x/exp/maps"
+	"reflect"
 	"github.com/labstack/echo/v4"
 )
 
@@ -18,6 +16,19 @@ func FirstElement(list []string) string {
   return ""
 }
 
+func GetHumanTags(s any) map[string]interface{} {
+  mappedData := make(map[string]interface{})
+  t := reflect.TypeOf(s)
+  v := reflect.ValueOf(s)
+  for i := 0; i < t.NumField(); i++ {
+    fld := t.Field(i)
+    humanTag := fld.Tag.Get("human")
+    if humanTag != ""{
+      mappedData[humanTag] = v.Field(i).Interface()
+    }
+  }
+  return mappedData
+}
 
 func main(){
 	e := echo.New()
@@ -36,7 +47,6 @@ func main(){
 	})
 
   e.GET("/data", func(c echo.Context) error {
-			//log.Print("Data")
       result, err := db.QueryEntity()
       if err != nil {
         return c.JSON(200, err)
@@ -50,7 +60,6 @@ func main(){
       if err != nil {
         return c.JSON(200, "DB down")
     }
-			//log.Print("Entities")
 			return c.Render(200, "entities", result)
 	})
 
@@ -61,14 +70,12 @@ func main(){
       if err != nil {
         return c.JSON(200, "DB down")
     }
-
-		for _, v := range result{
-			if slices.Contains(v.Name, query) {
-        log.Printf("PROFILE %s", v)
+    for _, v:= range result {
+      if v.Id == query {
         return c.Render(200, "profile", v)
-			}
-		}
-		return c.Render(200, "profile", nil)
+      }
+    }
+	return c.Render(200, "", nil)
 	})
 	e.Start(":8080")
 
@@ -86,6 +93,7 @@ func (t *Templates) Render(w io.Writer, name string, data interface{}, c echo.Co
 func newTemplate() *Templates{
   funcMap := template.FuncMap{
 		"firstElement": FirstElement,
+    "getHumanTags": GetHumanTags,
 	}
 	return &Templates{
 			templates: template.Must(template.New("").Funcs(funcMap).ParseGlob("*views/*.html")),
