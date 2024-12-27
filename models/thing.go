@@ -1,27 +1,20 @@
 package db_models
-
-
 /*
   A name used for person or company. This is assumed to be as complete as available. 
   Things having multiple names must be considered perfectly ordinary.
   */
- 
 type Name []string
 /*
 Properties to define countries and territories. zz global iso
 I think I'll store this as string rather than as normalised iso */
-
 type Country []string
 
 type Gender []string
-
 // Is an array of number where number is a string ie 1.70cm or 1000
 type Height []Number
-
 /*A numeric value, like the size of a piece of land, or the value of a contract. Since all property values in FtM are strings, this is also a string and there is no specified format (e.g. 1,000.00 vs. 1.000,00).
 In the future we might want to enable annotations for format, units, or even to introduce a separate property type for monetary values.
 */
-
 type Number string
 /*A geographic address used to describe a location of residence or post box. 
 There's no specific order for the sub-parts of address (street, city, postal code)
